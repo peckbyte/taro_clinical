@@ -2,9 +2,11 @@ import "@tarojs/async-await";
 import Taro, { Component } from "@tarojs/taro";
 import { Provider } from "@tarojs/redux";
 import models from "./models";
-import Index from "./pages/index";
+
 import dva from "./utils/dva";
-import "taro-ui/dist/style/index.scss";
+import Index from "./pages/index";
+import "./app.scss";
+
 const dvaApp = dva.createApp({
   initialState: {},
   models: models
@@ -12,7 +14,6 @@ const dvaApp = dva.createApp({
 
 const store = dvaApp.getStore();
 
-import "./app.scss";
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：
 // if (process.env.NODE_ENV !== 'production' && process.env.TARO_ENV === 'h5')  {
