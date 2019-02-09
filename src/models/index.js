@@ -1,3 +1,3 @@
 import common from "./common";
-
-export default [common];
+import login from "../pages/login/model";
+export default [common, login];
