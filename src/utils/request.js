@@ -40,6 +40,7 @@ export default (options = { method: "GET", data: {} }) => {
           mask: true
         });
       }
+      console.log(data);
       return data;
     } else {
       throw new Error(`网络请求错误，状态码${statusCode}`);

@@ -1,9 +1,10 @@
 import Taro, { Component } from "@tarojs/taro";
 
-import { View } from "@tarojs/components";
-import { connect } from "@tarojs/redux";
-import { AtButton, AtDivider, AtGrid } from "taro-ui";
+import { View, Image } from "@tarojs/components";
+import { connect, Provider } from "@tarojs/redux";
+import { AtButton, AtDivider, AtGrid, AtNoticebar } from "taro-ui";
 import "./index.scss";
+import Header from "../../components/header/index";
 @connect(({ test }) => ({
   ...test
 }))
@@ -33,10 +34,32 @@ class Index extends Component {
       url: "/pages/login/index"
     });
   };
+
+  onGridClick = (item, index) => {
+    console.log(item);
+    console.log(index);
+    switch (index) {
+      case 1:
+        Taro.navigateTo({
+          url: "/pages/death/index"
+        });
+      default:
+        console.log("测试点击跳转");
+    }
+  };
   render() {
     console.log(this.props);
     return (
       <View className="index">
+        <Header title="功能选择" />
+        <View style="width:100%;height=30px;font-weight:bold;font-size:4.8vw;text-align:center;color:#4A90E2">
+          江西省人民医院·呼吸与危重症医学科办公系统
+        </View>
+        <View>
+          <AtNoticebar icon="volume-plus" marquee>
+            病案室有数份病历修改，下月10号结束。
+          </AtNoticebar>
+        </View>
         <View>
           <AtGrid
             data={[
@@ -71,6 +94,7 @@ class Index extends Component {
                 value: "危急值"
               }
             ]}
+            onClick={this.onGridClick}
           />
         </View>
       </View>

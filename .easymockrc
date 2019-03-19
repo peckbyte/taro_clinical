@@ -1,0 +1,10 @@
+{
+  "output": "api",
+  "template": "axios",
+  "projects": [
+    {
+      "id": "5c5318b47e0da549724ecea2",
+      "name": "demo"
+    }
+  ]
+}

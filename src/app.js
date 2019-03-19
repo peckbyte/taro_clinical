@@ -6,7 +6,6 @@ import models from "./models";
 import dva from "./utils/dva";
 import Index from "./pages/index";
 import "./app.scss";
-
 const dvaApp = dva.createApp({
   initialState: {},
   models: models
@@ -22,7 +21,7 @@ const store = dvaApp.getStore();
 
 class App extends Component {
   config = {
-    pages: ["pages/index/index", "pages/login/index"],
+    pages: ["pages/index/index", "pages/login/index", "pages/death/index"],
     window: {
       backgroundTextStyle: "light",
       navigationBarBackgroundColor: "#fff",
@@ -44,7 +43,7 @@ class App extends Component {
           selectedIconPath: "./images/tab/cart-active.png"
         },
         {
-          pagePath: "pages/index/index",
+          pagePath: "pages/login/index",
           text: "我的",
           iconPath: "./images/tab/user.png",
           selectedIconPath: "./images/tab/user-active.png"
