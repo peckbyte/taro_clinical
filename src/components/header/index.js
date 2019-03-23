@@ -18,7 +18,7 @@ class Header extends Taro.Component {
 }
 
 Header.defaultProps = {
-  title: "标题"
+  title: "标题测试"
 };
 
 Header.propTypes = {

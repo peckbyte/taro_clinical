@@ -5,23 +5,53 @@ import { AtList, AtListItem, AtPagination, AtSwipeAction } from "taro-ui";
 export default class HXList extends Taro.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      openFlag: null,
+      data: []
+    };
+  }
+
+  componentWillReceiveProps(nextProps, nextContext) {
+    if (this.props.data != nextProps) {
+      console.log(nextProps.data);
+      let nextData = nextProps.data.map(item => {
+        return Object.assign(item, { isOpened: false });
+      });
+      console.log("componentWillReceiveProps");
+      console.log(nextData);
+      this.setState({
+        data: nextData
+      });
+    }
   }
 
   handleSwipeOpened = (index, e) => {
-    console.log(e);
+    if (this.state.openFlag) {
+      let data = this.state.data;
+      data[this.state.openFlag].isOpened = false;
+      this.setState({
+        openFlag: index,
+        data: data
+      });
+    } else {
+      this.setState({
+        openFlag: index
+      });
+    }
   };
   render() {
-    const { data } = this.props;
+    const { data } = this.state;
+    console.log(data);
     return (
       <View>
         <View>
-          {data ? (
+          {data.length != 0 ? (
             <AtList>
               {data.map((item, index) => {
                 return (
                   <AtSwipeAction
                     key={item.id}
-                    isOpened={false}
+                    isOpened={item.isOpened}
                     autoClose={true}
                     onOpened={this.handleSwipeOpened.bind(this, index)}
                     options={[

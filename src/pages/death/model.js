@@ -26,12 +26,11 @@ export default {
 
       // 为死亡数据添加isOpened属性，为判断listItem组件的swipeAction是否开启，方便实现在list中显示单个swipeAction
       let deathDataArray = payload.data.patients;
-      if (deathDataArray.length != 0) {
-        deathDataArray.map(item => {
-          Object.assign(item, { isOpened: false });
-        });
-      }
-      console.log(deathDataArray);
+      // if (deathDataArray.length != 0) {
+      //   deathDataArray.map(item => {
+      //     Object.assign(item, { isOpened: false });
+      //   });
+      // }
       return { ...state, test: deathDataArray };
     }
   }

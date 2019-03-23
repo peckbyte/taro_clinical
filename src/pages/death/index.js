@@ -32,7 +32,7 @@ export default class Death extends Taro.Component {
         <Header />
         <HXFilter />
         <AtButton onClick={this.getData}>测试</AtButton>
-        <AtButton onClick={this.testData}>测试effect数据</AtButton>
+        <AtButton onClick={this.testData}>测试数据</AtButton>
         <List data={this.props.test} />
       </View>
     );
