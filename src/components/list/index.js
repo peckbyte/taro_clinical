@@ -1,3 +1,8 @@
+/*
+ * 参数：data
+ * onItemClick   响应点击事件
+ * */
+
 import Taro from "@tarojs/taro";
 import { View } from "@tarojs/components";
 import { AtList, AtListItem, AtPagination, AtSwipeAction } from "taro-ui";
@@ -41,6 +46,7 @@ export default class HXList extends Taro.Component {
   };
   render() {
     const { data } = this.state;
+    const { onItemClick } = this.props;
     console.log(data);
     return (
       <View>
@@ -54,6 +60,7 @@ export default class HXList extends Taro.Component {
                     isOpened={item.isOpened}
                     autoClose={true}
                     onOpened={this.handleSwipeOpened.bind(this, index)}
+                    onClick={onItemClick.bind(this, index)}
                     options={[
                       {
                         text: "修改",
