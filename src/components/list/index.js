@@ -3,40 +3,67 @@
  * onItemClick   响应点击事件
  * */
 
-import Taro from "@tarojs/taro";
-import { View } from "@tarojs/components";
-import { AtList, AtListItem, AtPagination, AtSwipeAction } from "taro-ui";
+import Taro from '@tarojs/taro';
+import { View } from '@tarojs/components';
+import {
+  AtList,
+  AtListItem,
+  AtPagination,
+  AtSwipeAction,
+  AtToast
+} from 'taro-ui';
 
 export default class HXList extends Taro.Component {
   constructor(props) {
     super(props);
     this.state = {
       openFlag: null,
-      data: []
+      data: [],
+      currentPageData: [],
+      pageSize: 5,
+      currentPage: 1,
+      dataSize: null
     };
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    if (this.props.data != nextProps) {
+    if (this.props.data != nextProps.data) {
       console.log(nextProps.data);
       let nextData = nextProps.data.map(item => {
         return Object.assign(item, { isOpened: false });
       });
-      console.log("componentWillReceiveProps");
-      console.log(nextData);
+      let dataSize = nextData.length;
+      let pageSize = this.state.pageSize;
+      let pageNum = Math.ceil(dataSize / pageSize);
+      let pages_data = [];
+      for (let i = 0; i < pageNum; i++) {
+        pages_data.push(
+          nextData.slice(
+            i * pageSize,
+            i < pageNum - 1 ? (i + 1) * pageSize : dataSize
+          )
+        );
+      }
+
+      console.log('componentWillReceiveProps');
+      console.log(pages_data);
+      console.log(pages_data[0]);
+      let data = pages_data;
       this.setState({
-        data: nextData
+        data: data,
+        currentPage: 1,
+        dataSize: dataSize
       });
     }
   }
 
   handleSwipeOpened = (index, e) => {
     if (this.state.openFlag) {
-      let data = this.state.data;
-      data[this.state.openFlag].isOpened = false;
+      let PageData = this.state.currentPageData;
+      PageData[this.state.openFlag + 1].isOpened = false;
       this.setState({
         openFlag: index,
-        data: data
+        currentPageData: PageData
       });
     } else {
       this.setState({
@@ -44,16 +71,39 @@ export default class HXList extends Taro.Component {
       });
     }
   };
+
+  handlePageChange = (type, current) => {
+    console.log('page change');
+
+    console.log(type);
+    console.log(current);
+  };
+
   render() {
-    const { data } = this.state;
-    const { onItemClick } = this.props;
-    console.log(data);
+    const { data, dataSize, pageSize, currentPageData } = this.state;
+    const { onItemClick, isLoading } = this.props;
+    const currentPageData_test = [];
+    console.log('currentPageData');
+    for (let i of data) {
+      console.log(i);
+    }
+
     return (
       <View>
         <View>
-          {data.length != 0 ? (
+          {isLoading ? (
+            <AtToast
+              text="加载中"
+              status="loading"
+              duration={30000}
+              isOpened={true}
+            />
+          ) : null}
+        </View>
+        <View>
+          {currentPageData_test.length != 0 ? (
             <AtList>
-              {data.map((item, index) => {
+              {currentPageData_test.map((item, index) => {
                 return (
                   <AtSwipeAction
                     key={item.id}
@@ -63,15 +113,15 @@ export default class HXList extends Taro.Component {
                     onClick={onItemClick.bind(this, index)}
                     options={[
                       {
-                        text: "修改",
+                        text: '修改',
                         style: {
-                          backgroundColor: "#6190E8"
+                          backgroundColor: '#6190E8'
                         }
                       },
                       {
-                        text: "删除",
+                        text: '删除',
                         style: {
-                          backgroundColor: "#FF4949"
+                          backgroundColor: '#FF4949'
                         }
                       }
                     ]}
@@ -88,7 +138,12 @@ export default class HXList extends Taro.Component {
           ) : null}
         </View>
         <View>
-          <AtPagination total={20} />
+          <AtPagination
+            current={currentPage}
+            total={dataSize}
+            pageSize={pageSize}
+            onPageChange={this.handlePageChange}
+          />
         </View>
       </View>
     );
