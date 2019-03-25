@@ -22,6 +22,7 @@ export default class HXList extends Taro.Component {
       currentPageData: [],
       pageSize: 5,
       currentPage: 1,
+      pageNumber: 1,
       dataSize: null
     };
   }
@@ -32,35 +33,71 @@ export default class HXList extends Taro.Component {
       let nextData = nextProps.data.map(item => {
         return Object.assign(item, { isOpened: false });
       });
-      let dataSize = nextData.length;
-      let pageSize = this.state.pageSize;
-      let pageNum = Math.ceil(dataSize / pageSize);
-      let pages_data = [];
-      for (let i = 0; i < pageNum; i++) {
-        pages_data.push(
-          nextData.slice(
-            i * pageSize,
-            i < pageNum - 1 ? (i + 1) * pageSize : dataSize
-          )
-        );
-      }
-
-      console.log('componentWillReceiveProps');
-      console.log(pages_data);
-      console.log(pages_data[0]);
-      let data = pages_data;
+      let { pageSize } = this.state;
+      let dataSize_temp = nextData.length;
+      let pageNumber_temp = Math.ceil(dataSize_temp / pageSize);
+      let currentPageData_init = this.getPageData(nextData, 1);
+      console.log(currentPageData_init);
       this.setState({
-        data: data,
+        data: nextData,
         currentPage: 1,
-        dataSize: dataSize
+        pageNumber: pageNumber_temp,
+        dataSize: dataSize_temp,
+        currentPageData: currentPageData_init
       });
     }
+
+    console.log('receiveProps');
+    console.log(this.state.currentPageData);
   }
+
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    console.log('shouldComponentUpdate');
+  }
+
+  componentWillUpdate(nextProps, nextState, nextContext) {
+    console.log('componentWillUpdate');
+  }
+
+  componentDidUpdate(prevProps, prevState, prevContext) {
+    console.log('componentDidUpdate');
+  }
+  // 根据state中页面数，从data中提取处展示页面的page_data
+  getPageData = (total_data, page) => {
+    let { pageSize, pageNumber, dataSize } = this.state;
+    let page_start = null;
+    let page_end = null;
+
+    if (dataSize) {
+      page_start = (page - 1) * pageSize;
+      page_end = page < pageNumber ? page * pageSize : dataSize;
+    } else {
+      page_start = 0;
+      page_end = total_data.length > 5 ? 5 : total_data.length;
+    }
+
+    let page_data = total_data.slice(page_start, page_end);
+
+    return page_data;
+  };
+
+  // closePageSwipe = (data) => {
+  //   if(data){
+  //     data.map(item => {
+  //       item.isOpened = false
+  //       return item
+  //     })
+  //     return data
+  //   }
+  //   return null
+  // }
 
   handleSwipeOpened = (index, e) => {
     if (this.state.openFlag) {
       let PageData = this.state.currentPageData;
-      PageData[this.state.openFlag + 1].isOpened = false;
+      console.log(`index is ${index}`);
+      console.log(this.state.openFlag);
+      PageData[this.state.openFlag].isOpened = false;
       this.setState({
         openFlag: index,
         currentPageData: PageData
@@ -72,22 +109,41 @@ export default class HXList extends Taro.Component {
     }
   };
 
-  handlePageChange = (type, current) => {
+  handlePageChange = e => {
     console.log('page change');
 
-    console.log(type);
-    console.log(current);
+    console.log(e.type);
+    console.log(e.current);
+    switch (e.type) {
+      case 'next':
+        this.setState({
+          currentPage: this.state.currentPage + 1,
+          currentPageData: this.getPageData(
+            this.state.data,
+            this.state.currentPage + 1
+          )
+        });
+        console.log(`next page = ${this.state.currentPage}`);
+        break;
+      case 'prev':
+        this.setState({
+          currentPage: this.state.currentPage - 1,
+          currentPageData: this.getPageData(
+            this.state.data,
+            this.state.currentPage - 1
+          )
+        });
+        break;
+      default:
+        break;
+    }
   };
 
   render() {
-    const { data, dataSize, pageSize, currentPageData } = this.state;
+    const { currentPage, pageSize, currentPageData } = this.state;
     const { onItemClick, isLoading } = this.props;
-    const currentPageData_test = [];
     console.log('currentPageData');
-    for (let i of data) {
-      console.log(i);
-    }
-
+    console.log(currentPageData);
     return (
       <View>
         <View>
@@ -101,9 +157,9 @@ export default class HXList extends Taro.Component {
           ) : null}
         </View>
         <View>
-          {currentPageData_test.length != 0 ? (
+          {currentPageData.length != 0 ? (
             <AtList>
-              {currentPageData_test.map((item, index) => {
+              {currentPageData.map((item, index) => {
                 return (
                   <AtSwipeAction
                     key={item.id}
