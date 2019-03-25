@@ -45,6 +45,7 @@ export default class Death extends Taro.Component {
   onListItemClick = (index, e) => {
     switch (e.text) {
       case '修改':
+        console.log('修改');
         this.setState({
           isModalOpened: true
         });
@@ -57,15 +58,12 @@ export default class Death extends Taro.Component {
     }
   };
 
-  componentWillReceiveProps(nextProps, nextContext) {
-    // console.log('isLoading:');
-    // console.log(nextProps.isLoading);
-    // if (nextProps.isLoading != this.state.isLoading) {
-    //   this.setState({
-    //     isLoading: nextProps.isLoading
-    //   });
-    // }
-  }
+  componentWillReceiveProps(nextProps, nextContext) {}
+
+  handleClose = () => {
+    this.setState({ isModalOpened: false });
+    console.log('触发关闭');
+  };
 
   render() {
     const { isModalOpened } = this.state;
@@ -82,7 +80,11 @@ export default class Death extends Taro.Component {
           onItemClick={this.onListItemClick}
           isLoading={isLoading}
         />
-        <HXmodal isOpened={isModalOpened} data={data}>
+        <HXmodal
+          isOpened={isModalOpened}
+          data={data}
+          onClose={this.handleClose}
+        >
           <AtInput name="age" title="年龄" placeholder="请输入患者年龄" />
           <AtInput name="sex" title="性别" />
           <AtInput name="id" title="住院号" />

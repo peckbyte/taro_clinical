@@ -1,5 +1,5 @@
-import Taro, { Component } from "@tarojs/taro";
-import { View } from "@tarojs/components";
+import Taro, { Component } from '@tarojs/taro';
+import { View } from '@tarojs/components';
 import {
   AtModalHeader,
   AtModalContent,
@@ -8,7 +8,7 @@ import {
   AtButton,
   AtInput,
   AtForm
-} from "taro-ui";
+} from 'taro-ui';
 
 class HXModal extends Component {
   constructor(props) {
@@ -23,7 +23,7 @@ class HXModal extends Component {
   render() {
     return (
       <View>
-        <AtModal isOpened={this.props.isOpened}>
+        <AtModal isOpened={this.props.isOpened} onClose={this.props.onClose}>
           <AtModalHeader>修改模态框</AtModalHeader>
           <AtModalContnt>{this.props.children}</AtModalContnt>
           <AtModalAction>
