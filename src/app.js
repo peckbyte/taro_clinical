@@ -1,11 +1,11 @@
-import "@tarojs/async-await";
-import Taro, { Component } from "@tarojs/taro";
-import { Provider } from "@tarojs/redux";
-import models from "./models";
+import '@tarojs/async-await';
+import Taro, { Component } from '@tarojs/taro';
+import { Provider } from '@tarojs/redux';
+import models from './models';
 
-import dva from "./utils/dva";
-import Index from "./pages/index";
-import "./app.scss";
+import dva from './utils/dva';
+import Index from './pages/index';
+import './app.scss';
 const dvaApp = dva.createApp({
   initialState: {},
   models: models
@@ -21,38 +21,44 @@ const store = dvaApp.getStore();
 
 class App extends Component {
   config = {
-    pages: ["pages/index/index", "pages/login/index", "pages/death/index"],
+    pages: [
+      'pages/index/index',
+      'pages/login/index',
+      'pages/blog/index',
+      'pages/death/index',
+      'pages/chronic/index'
+    ],
     window: {
-      backgroundTextStyle: "light",
-      navigationBarBackgroundColor: "#fff",
-      navigationBarTitleText: "WeChat",
-      navigationBarTextStyle: "black"
+      backgroundTextStyle: 'light',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTitleText: 'WeChat',
+      navigationBarTextStyle: 'black'
     },
     tabBar: {
       list: [
         {
-          pagePath: "pages/index/index",
-          text: "首页",
-          iconPath: "./images/tab/home.png",
-          selectedIconPath: "./images/tab/home-active.png"
+          pagePath: 'pages/index/index',
+          text: '首页',
+          iconPath: './images/tab/home.png',
+          selectedIconPath: './images/tab/home-active.png'
         },
         {
-          pagePath: "pages/index/index",
-          text: "资源",
-          iconPath: "./images/tab/cart.png",
-          selectedIconPath: "./images/tab/cart-active.png"
+          pagePath: 'pages/blog/index',
+          text: '资讯',
+          iconPath: './images/tab/cart.png',
+          selectedIconPath: './images/tab/cart-active.png'
         },
         {
-          pagePath: "pages/login/index",
-          text: "我的",
-          iconPath: "./images/tab/user.png",
-          selectedIconPath: "./images/tab/user-active.png"
+          pagePath: 'pages/login/index',
+          text: '我的',
+          iconPath: './images/tab/user.png',
+          selectedIconPath: './images/tab/user-active.png'
         }
       ],
-      color: "#333",
-      selectedColor: "#333",
-      backgroundColor: "#fff",
-      borderStyle: "black"
+      color: '#333',
+      selectedColor: '#333',
+      backgroundColor: '#fff',
+      borderStyle: 'black'
     }
   };
 
@@ -77,4 +83,4 @@ class App extends Component {
   }
 }
 
-Taro.render(<App />, document.getElementById("app"));
+Taro.render(<App />, document.getElementById('app'));

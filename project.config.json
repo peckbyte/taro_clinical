@@ -4,7 +4,7 @@
   "description": "科室管理小程序",
   "appid": "wx77dcbc2d766d3f1e",
   "setting": {
-    "urlCheck": true,
+    "urlCheck": false,
     "es6": false,
     "postcss": false,
     "minified": true,
